@@ -1,0 +1,39 @@
+# apt-get update / install apache2 -y
+- name: Install Apache on Debian
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+# systemctl start/enable apache2
+- name: Start Apache on Debian
+  systemd:
+    state: started
+    name: apache2
+    enabled: yes
+
+# curl https://www.free-css.com/assets/files/free-css-templates/download/page296/oxer.zip -o /tmp/oxer.zip
+- name: Download Template on Debian
+  get_url:
+    url: https://www.free-css.com/assets/files/free-css-templates/download/page296/oxer.zip
+    dest: /tmp/oxer.zip
+
+# apt-get install unzip -y 
+- name: Install Unzip on Debian
+  apt:
+    name: unzip
+    state: latest
+
+# unzip /tmp/oxer.zip
+- name: Extract Template on Debian
+  unarchive:
+    src: /tmp/oxer.zip
+    dest: /tmp/
+    remote_src: yes
+
+# mv /tmp/oxer-html/* /var/www/html/
+- name: Move Template file to /var/www/html on Debian
+  shell: "mv /tmp/oxer-html/* /var/www/html/"
+  args:
+    creates: /var/www/html/about.html
+    

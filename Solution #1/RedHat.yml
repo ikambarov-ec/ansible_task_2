@@ -1,0 +1,43 @@
+# setenforce 0
+- name: Disable SELinux on RedHat
+  selinux:
+    state: disabled
+
+# yum install httpd -y
+- name: Install Apache on RedHat
+  yum:
+    name: httpd
+    state: latest
+
+# systemctl start/enable httpd
+- name: Start and Enable Apache on RedHat
+  systemd:
+    name: httpd
+    state: started
+    enabled: yes
+    
+# curl https://www.free-css.com/assets/files/free-css-templates/download/page296/oxer.zip -o /tmp/oxer.zip
+- name: Download Template on RedHat
+  get_url:
+    url: https://www.free-css.com/assets/files/free-css-templates/download/page296/oxer.zip
+    dest: /tmp/oxer.zip
+
+# yum install unzip -y 
+- name: Install Unzip on RedHat
+  yum:
+    name: unzip
+    state: latest
+
+# unzip /tmp/oxer.zip
+- name: Extract Template on RedHat
+  unarchive:
+    src: /tmp/oxer.zip
+    dest: /tmp/
+    remote_src: yes
+
+# mv /tmp/oxer-html/* /var/www/html/
+- name: Move Template file to /var/www/html on RedHat
+  shell: "mv /tmp/oxer-html/* /var/www/html/"
+  args:
+    creates: /var/www/html/about.html
+    
