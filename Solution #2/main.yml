@@ -1,0 +1,34 @@
+- hosts: all
+  tasks:
+  - name: Install Apache
+    package:
+      name: "{{ package_name }}"
+      state: present
+
+  - name: Start Apache
+    systemd:
+      state: started
+      name: "{{ service_name }}"
+      enabled: yes
+
+  - name: Download Template
+    get_url:
+      url: https://www.free-css.com/assets/files/free-css-templates/download/page296/oxer.zip
+      dest: /tmp/oxer.zip
+
+  - name: Install Unzip
+    package:
+      name: unzip
+      state: latest
+
+  - name: Extract Template
+    unarchive:
+      src: /tmp/oxer.zip
+      dest: /tmp/
+      remote_src: yes
+
+  - name: Move Template file to /var/www/html
+    shell: "mv /tmp/oxer-html/* /var/www/html/"
+    args:
+      creates: /var/www/html/about.html
+      
